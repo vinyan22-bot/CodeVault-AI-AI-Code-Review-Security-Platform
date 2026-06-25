@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CodeVault AI — AI Code Review & Security Platform</title>
+<meta name="description" content="Paste your code. Get instant AI-powered review, security scanning, and performance analysis. One file. No subscription. Bring your own API key.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0A0E1A;--surface:#111827;--surface2:#1A2140;--border:#1E2D4A;
+  --cobalt:#3B6FFF;--mint:#00FFB2;--text:#E8EEFF;--muted:#8B9DC3;--faint:#3A4A6B;
+  --danger:#FF4B6E;--warning:#FFAA00;
+  --fd:'Space Grotesk',sans-serif;--fm:'JetBrains Mono',monospace;--fb:'Inter',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:15px;line-height:1.6;overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 48px;background:rgba(10,14,26,0.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.logo{font-family:var(--fd);font-weight:700;font-size:17px;letter-spacing:-0.03em;color:var(--text);display:flex;align-items:center;gap:8px;text-decoration:none}
+.logo-mark{width:28px;height:28px;background:linear-gradient(135deg,var(--cobalt),var(--mint));border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px}
+.nav-cta{display:flex;align-items:center;gap:12px}
+.btn-ghost{background:none;border:1px solid var(--border);color:var(--muted);padding:8px 20px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--fb);text-decoration:none;transition:all .2s}
+.btn-ghost:hover{border-color:var(--cobalt);color:var(--text)}
+.btn-primary{background:var(--cobalt);border:none;color:#fff;padding:9px 22px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--fd);text-decoration:none;transition:all .2s;letter-spacing:.01em}
+.btn-primary:hover{background:#4A7DFF;transform:translateY(-1px)}
+
+/* HERO */
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;padding-top:80px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-200px;left:-200px;width:700px;height:700px;background:radial-gradient(circle,rgba(59,111,255,.1) 0%,transparent 70%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:-100px;right:200px;width:400px;height:400px;background:radial-gradient(circle,rgba(0,255,178,.06) 0%,transparent 70%);pointer-events:none}
+.hero-left{display:flex;flex-direction:column;justify-content:center;padding:80px 40px 80px 80px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--fm);font-size:11px;color:var(--mint);letter-spacing:.15em;text-transform:uppercase;margin-bottom:28px}
+.eyebrow::before{content:'';width:20px;height:1px;background:var(--mint)}
+.hero-h1{font-family:var(--fd);font-size:clamp(42px,5vw,66px);font-weight:700;line-height:1.05;letter-spacing:-.04em;margin-bottom:24px}
+.hero-h1 span{background:linear-gradient(120deg,var(--cobalt),var(--mint));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-p{font-size:17px;color:var(--muted);line-height:1.75;max-width:440px;margin-bottom:40px;font-weight:300}
+.hero-btns{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:48px}
+.btn-hero{background:var(--cobalt);color:#fff;border:none;padding:14px 32px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:var(--fd);text-decoration:none;display:inline-block;transition:all .2s;letter-spacing:-.01em}
+.btn-hero:hover{background:#4A7DFF;transform:translateY(-2px);box-shadow:0 12px 30px rgba(59,111,255,.3)}
+.btn-outline{background:none;border:1px solid var(--border);color:var(--muted);padding:14px 28px;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;font-family:var(--fb);text-decoration:none;transition:all .2s}
+.btn-outline:hover{color:var(--text);border-color:var(--cobalt)}
+.trust-row{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.trust-item{font-family:var(--fm);font-size:11px;color:var(--faint);letter-spacing:.08em}
+.trust-item span{color:var(--mint)}
+
+/* TERMINAL */
+.hero-right{display:flex;align-items:center;padding:60px 60px 60px 20px}
+.terminal{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5),0 0 0 1px rgba(59,111,255,.08)}
+.t-bar{display:flex;align-items:center;padding:14px 18px;background:rgba(255,255,255,.03);border-bottom:1px solid var(--border);gap:12px}
+.dots{display:flex;gap:6px}
+.dot{width:11px;height:11px;border-radius:50%}
+.t-title{font-family:var(--fm);font-size:12px;color:var(--faint);flex:1;text-align:center}
+.t-badge{font-family:var(--fm);font-size:10px;background:rgba(0,255,178,.1);border:1px solid rgba(0,255,178,.3);color:var(--mint);padding:2px 8px;border-radius:4px}
+.t-tabs{display:flex;border-bottom:1px solid var(--border)}
+.t-tab{padding:8px 16px;font-family:var(--fm);font-size:12px;color:var(--faint);border-right:1px solid var(--border)}
+.t-tab.on{color:var(--text);background:rgba(59,111,255,.08);border-bottom:2px solid var(--cobalt)}
+.t-body{padding:20px;font-family:var(--fm);font-size:12px;line-height:1.7;position:relative;min-height:300px}
+.scan{position:absolute;left:0;right:0;height:1.7em;background:linear-gradient(90deg,transparent,rgba(59,111,255,.06),transparent);pointer-events:none;animation:scan 4s ease-in-out infinite}
+@keyframes scan{0%{top:20px;opacity:0}10%{opacity:1}90%{opacity:.5}100%{top:300px;opacity:0}}
+.cl{display:flex;gap:14px;position:relative}
+.ln{color:var(--faint);min-width:20px;text-align:right;user-select:none}
+.kw{color:#A78BFA}.fn{color:#60A5FA}.str{color:#34D399}.cm{color:var(--faint);font-style:italic}.op{color:var(--muted)}.tx{color:var(--text)}
+.ann{position:absolute;right:-8px;top:0;transform:translateX(100%);border-radius:5px;padding:4px 9px;font-size:10px;white-space:nowrap;display:flex;align-items:center;gap:4px;opacity:0;animation:fadeIn .4s ease forwards}
+.ann-w{border:1px solid rgba(255,170,0,.4);color:var(--warning);background:#1A1000}.ann-e{border:1px solid rgba(255,75,110,.4);color:var(--danger);background:#1A0008}.ann-o{border:1px solid rgba(0,255,178,.4);color:var(--mint);background:#001A0E}
+.a1{animation-delay:.7s}.a2{animation-delay:1.4s}.a3{animation-delay:2.1s}
+@keyframes fadeIn{from{opacity:0;transform:translateX(calc(100% - 8px))}to{opacity:1;transform:translateX(100%)}}
+.ai-bar{margin:0 16px 16px;background:rgba(59,111,255,.05);border:1px solid rgba(59,111,255,.2);border-radius:8px;padding:12px}
+.ai-bar-head{display:flex;align-items:center;gap:8px;font-family:var(--fm);font-size:11px;color:var(--cobalt);margin-bottom:8px}
+.pulse{width:7px;height:7px;background:var(--cobalt);border-radius:50%;animation:p 1.5s ease infinite}
+@keyframes p{0%,100%{opacity:1}50%{opacity:.3}}
+.ai-bar-txt{font-size:12px;color:var(--muted);line-height:1.6}
+.t-foot{border-top:1px solid var(--border);padding:10px 16px;display:flex;align-items:center;justify-content:space-between}
+.pills{display:flex;gap:8px}
+.pill{font-family:var(--fm);font-size:11px;padding:3px 10px;border-radius:20px;display:flex;align-items:center;gap:4px}
+.p-bad{background:rgba(255,75,110,.1);color:var(--danger);border:1px solid rgba(255,75,110,.2)}
+.p-warn{background:rgba(255,170,0,.1);color:var(--warning);border:1px solid rgba(255,170,0,.2)}
+.p-ok{background:rgba(0,255,178,.1);color:var(--mint);border:1px solid rgba(0,255,178,.2)}
+.score{font-family:var(--fm);font-size:11px;color:var(--muted)}
+.score span{color:var(--mint)}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.stat{padding:36px 48px;border-right:1px solid var(--border)}
+.stat:last-child{border-right:none}
+.stat-n{font-family:var(--fd);font-size:42px;font-weight:700;letter-spacing:-.04em;line-height:1;margin-bottom:6px}
+.stat-n span{color:var(--cobalt)}
+.stat-l{font-size:13px;color:var(--muted)}
+
+/* FEATURES */
+.section{padding:100px 80px;max-width:1400px;margin:0 auto}
+.sec-eye{font-family:var(--fm);font-size:11px;color:var(--cobalt);letter-spacing:.15em;text-transform:uppercase;margin-bottom:16px}
+.sec-title{font-family:var(--fd);font-size:clamp(32px,3.5vw,48px);font-weight:700;letter-spacing:-.04em;margin-bottom:16px;line-height:1.05}
+.sec-sub{font-size:16px;color:var(--muted);max-width:520px;line-height:1.75;font-weight:300}
+.feat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;margin-top:56px;background:var(--border);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.fcard{background:var(--surface);padding:44px;position:relative;overflow:hidden;transition:background .3s}
+.fcard::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cobalt),var(--mint));opacity:0;transition:opacity .3s}
+.fcard:hover{background:var(--surface2)}
+.fcard:hover::before{opacity:1}
+.f-icon{width:46px;height:46px;background:rgba(59,111,255,.1);border:1px solid rgba(59,111,255,.2);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:22px}
+.f-title{font-family:var(--fd);font-size:19px;font-weight:600;letter-spacing:-.02em;margin-bottom:10px}
+.f-desc{font-size:13.5px;color:var(--muted);line-height:1.7;margin-bottom:20px}
+.f-list{list-style:none;display:flex;flex-direction:column;gap:7px}
+.f-list li{font-family:var(--fm);font-size:12px;color:var(--faint);display:flex;align-items:center;gap:8px}
+.f-list li::before{content:'→';color:var(--cobalt);font-size:11px}
+
+/* PRICING */
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:56px}
+.pcard{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:38px;position:relative;transition:transform .2s}
+.pcard:hover{transform:translateY(-3px)}
+.pcard.hot{border-color:var(--cobalt);background:linear-gradient(150deg,rgba(59,111,255,.08) 0%,var(--surface) 60%)}
+.hot-tag{position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:var(--cobalt);color:#fff;font-family:var(--fm);font-size:10px;font-weight:600;padding:4px 14px;border-radius:0 0 8px 8px;letter-spacing:.08em;white-space:nowrap}
+.p-tier{font-family:var(--fm);font-size:11px;color:var(--cobalt);letter-spacing:.12em;text-transform:uppercase;margin-bottom:18px}
+.p-amt{font-family:var(--fd);font-size:50px;font-weight:700;letter-spacing:-.05em;line-height:1;margin-bottom:4px}
+.p-amt sup{font-size:22px;vertical-align:super;color:var(--muted);font-weight:500;letter-spacing:0}
+.p-cad{font-size:13px;color:var(--muted);margin-bottom:24px}
+.p-sep{height:1px;background:var(--border);margin:18px 0}
+.p-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+.p-list li{font-size:13px;color:var(--muted);display:flex;align-items:flex-start;gap:9px;line-height:1.5}
+.ck{color:var(--mint);flex-shrink:0}.dk{color:var(--faint);flex-shrink:0}
+.p-btn{width:100%;padding:12px;border-radius:8px;font-family:var(--fd);font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;text-align:center;display:block;text-decoration:none;letter-spacing:-.01em}
+.p-btn-o{background:none;border:1px solid var(--border);color:var(--muted)}
+.p-btn-o:hover{border-color:var(--cobalt);color:var(--text)}
+.p-btn-s{background:var(--cobalt);border:none;color:#fff}
+.p-btn-s:hover{background:#4A7DFF}
+
+/* CTA */
+.cta{margin:0 80px 80px;background:linear-gradient(135deg,rgba(59,111,255,.1),rgba(0,255,178,.05));border:1px solid rgba(59,111,255,.2);border-radius:18px;padding:64px;display:flex;align-items:center;justify-content:space-between;gap:40px}
+.cta h2{font-family:var(--fd);font-size:clamp(26px,3vw,40px);font-weight:700;letter-spacing:-.04em;margin-bottom:10px;line-height:1.1}
+.cta p{font-size:15px;color:var(--muted);max-width:420px;line-height:1.7}
+.cta-btns{display:flex;gap:12px;flex-shrink:0;align-items:center}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:40px 80px;display:flex;align-items:center;justify-content:space-between}
+.foot-copy{font-family:var(--fm);font-size:12px;color:var(--faint)}
+.foot-links{display:flex;gap:24px;list-style:none}
+.foot-links a{font-size:13px;color:var(--faint);text-decoration:none;transition:color .2s}
+.foot-links a:hover{color:var(--muted)}
+
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--surface)}
+::-webkit-scrollbar-thumb{background:var(--faint);border-radius:4px}
+
+@media(max-width:900px){
+  nav{padding:14px 20px}
+  .hero{grid-template-columns:1fr}
+  .hero-right{display:none}
+  .hero-left{padding:60px 24px}
+  .stats{grid-template-columns:1fr 1fr}
+  .stat{padding:28px 24px}
+  .feat-grid{grid-template-columns:1fr}
+  .price-grid{grid-template-columns:1fr}
+  .section{padding:60px 24px}
+  .cta{flex-direction:column;margin:0 20px 60px;padding:40px 28px}
+  footer{flex-direction:column;gap:16px;padding:32px 20px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="logo"><div class="logo-mark">⬡</div>CodeVault AI</a>
+  <div class="nav-cta">
+    <a href="#features" class="btn-ghost">Features</a>
+    <a href="https://vinyan.gumroad.com/l/jpkfis" target="_blank" class="btn-primary">Get it — $47 →</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <div class="eyebrow">AI Engineering Intelligence</div>
+    <h1 class="hero-h1">Code reviewed.<br>Architecture<br><span>understood.</span></h1>
+    <p class="hero-p">A senior engineer in your pocket. Four AI-powered analysis engines in one HTML file — no install, no server, no subscription.</p>
+    <div class="hero-btns">
+      <a href="https://vinyan.gumroad.com/l/jpkfis" target="_blank" class="btn-hero">Get CodeVault AI — $47 →</a>
+      <a href="#features" class="btn-outline">See features</a>
+    </div>
+    <div class="trust-row">
+      <div class="trust-item">→ <span>One-time payment</span></div>
+      <div class="trust-item">→ <span>No subscription</span></div>
+      <div class="trust-item">→ <span>Single HTML file</span></div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="terminal">
+      <div class="t-bar">
+        <div class="dots"><div class="dot" style="background:#FF5F57"></div><div class="dot" style="background:#FEBC2E"></div><div class="dot" style="background:#28C840"></div></div>
+        <div class="t-title">auth_service.py — live analysis</div>
+        <div class="t-badge">● SCANNING</div>
+      </div>
+      <div class="t-tabs">
+        <div class="t-tab on">auth_service.py</div>
+        <div class="t-tab">db_connector.js</div>
+        <div class="t-tab">api/routes.ts</div>
+      </div>
+      <div class="t-body">
+        <div class="scan"></div>
+        <div class="cl"><span class="ln">1</span><span><span class="kw">import</span> <span class="tx">jwt</span><span class="op">, </span><span class="tx">hashlib</span><span class="op">, </span><span class="tx">os</span></span></div>
+        <div class="cl"><span class="ln">2</span><span><span class="kw">from</span> <span class="tx">datetime </span><span class="kw">import</span> <span class="tx">timedelta</span></span></div>
+        <div class="cl"><span class="ln">3</span><span>&nbsp;</span></div>
+        <div class="cl" style="position:relative"><span class="ln">4</span><span><span class="kw">def </span><span class="fn">generate_token</span><span class="op">(user_id, role):</span></span><div class="ann ann-w a1">⚠ Missing expiry</div></div>
+        <div class="cl"><span class="ln">5</span><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="tx">secret </span><span class="op">= </span><span class="str">"hardcoded_key_123"</span></span></div>
+        <div class="cl" style="position:relative"><span class="ln">6</span><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="tx">payload </span><span class="op">= {</span><span class="str">"uid"</span><span class="op">: </span><span class="tx">user_id</span><span class="op">}</span></span><div class="ann ann-e a2">🔴 Hardcoded secret</div></div>
+        <div class="cl"><span class="ln">7</span><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return </span><span class="fn">jwt.encode</span><span class="op">(payload, secret)</span></span></div>
+        <div class="cl"><span class="ln">8</span><span>&nbsp;</span></div>
+        <div class="cl" style="position:relative"><span class="ln">9</span><span><span class="kw">def </span><span class="fn">hash_password</span><span class="op">(password):</span></span><div class="ann ann-w a3">⚠ Use bcrypt instead</div></div>
+        <div class="cl"><span class="ln">10</span><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return </span><span class="fn">hashlib.md5</span><span class="op">(pw).hexdigest()</span></span></div>
+      </div>
+      <div class="ai-bar">
+        <div class="ai-bar-head"><div class="pulse"></div>CodeVault AI · Security Analysis</div>
+        <div class="ai-bar-txt">Found 2 critical issues: hardcoded JWT secret (line 5) — move to env var. MD5 hashing (line 9) is broken — replace with bcrypt (cost ≥ 12).</div>
+      </div>
+      <div class="t-foot">
+        <div class="pills">
+          <div class="pill p-bad">🔴 2 Critical</div>
+          <div class="pill p-warn">⚠ 3 Warnings</div>
+          <div class="pill p-ok">✓ 14 Passed</div>
+        </div>
+        <div class="score">Score: <span>41/100</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="stats">
+  <div class="stat"><div class="stat-n">4<span>B+</span></div><div class="stat-l">Lines analyzed</div></div>
+  <div class="stat"><div class="stat-n">10<span>×</span></div><div class="stat-l">Faster than manual review</div></div>
+  <div class="stat"><div class="stat-n">10<span>+</span></div><div class="stat-l">Languages supported</div></div>
+  <div class="stat"><div class="stat-n">$0<span>/mo</span></div><div class="stat-l">No subscription ever</div></div>
+</div>
+
+<section class="section" id="features">
+  <div class="sec-eye">// CAPABILITIES</div>
+  <h2 class="sec-title">Four engines.<br>One file.</h2>
+  <p class="sec-sub">Every engine is purpose-built with AI trained on production codebases. Open in any browser, paste your code, get results in seconds.</p>
+  <div class="feat-grid">
+    <div class="fcard">
+      <div class="f-icon">🔍</div>
+      <div class="f-title">Code Review Engine</div>
+      <div class="f-desc">Context-aware review that reads like a senior engineer wrote it — specific, pattern-aware, and actionable.</div>
+      <ul class="f-list"><li>Bug & anti-pattern detection</li><li>Naming & complexity scoring</li><li>Test coverage gap flags</li><li>Language-specific best practices</li></ul>
+    </div>
+    <div class="fcard">
+      <div class="f-icon">🛡️</div>
+      <div class="f-title">Security Scanner</div>
+      <div class="f-desc">Deep vulnerability detection — logic flaws, auth bypass patterns, hardcoded secrets, and dependency risks.</div>
+      <ul class="f-list"><li>OWASP Top 10 detection</li><li>Secret & credential leak scan</li><li>Supply chain audit</li><li>CVE cross-reference</li></ul>
+    </div>
+    <div class="fcard">
+      <div class="f-icon">🗺️</div>
+      <div class="f-title">Architecture Mapper</div>
+      <div class="f-desc">Understands how your modules and services connect — and where the structural weak points are.</div>
+      <ul class="f-list"><li>Dependency graph analysis</li><li>Circular dependency detection</li><li>Service coupling score</li><li>Refactor opportunity flags</li></ul>
+    </div>
+    <div class="fcard">
+      <div class="f-icon">⚡</div>
+      <div class="f-title">Performance Profiler</div>
+      <div class="f-desc">Catches N+1 queries, memory leaks, and blocking async operations before they hit production traffic.</div>
+      <ul class="f-list"><li>Database query pattern analysis</li><li>Async/await anti-patterns</li><li>Memory allocation hotspots</li><li>Big-O algorithm analysis</li></ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0">
+  <div class="sec-eye">// PRICING</div>
+  <h2 class="sec-title">One price.<br>Forever yours.</h2>
+  <p class="sec-sub">Buy once, use forever. No seat limits on the Solo tier — it's just you and your code.</p>
+  <div class="price-grid">
+    <div class="pcard">
+      <div class="p-tier">Starter</div>
+      <div class="p-amt"><sup>$</sup>37</div>
+      <div class="p-cad">Launch price — limited time</div>
+      <div class="p-sep"></div>
+      <ul class="p-list">
+        <li><span class="ck">✓</span>All 4 analysis engines</li>
+        <li><span class="ck">✓</span>Unlimited local runs</li>
+        <li><span class="ck">✓</span>10+ languages</li>
+        <li><span class="ck">✓</span>Single HTML file</li>
+        <li><span class="dk">–</span>Priority support</li>
+      </ul>
+      <a href="https://vinyan.gumroad.com/l/jpkfis" target="_blank" class="p-btn p-btn-o">Get started</a>
+    </div>
+    <div class="pcard hot">
+      <div class="hot-tag">BEST VALUE</div>
+      <div class="p-tier">Pro</div>
+      <div class="p-amt"><sup>$</sup>47</div>
+      <div class="p-cad">One-time payment</div>
+      <div class="p-sep"></div>
+      <ul class="p-list">
+        <li><span class="ck">✓</span>All 4 analysis engines</li>
+        <li><span class="ck">✓</span>Unlimited local runs</li>
+        <li><span class="ck">✓</span>10+ languages</li>
+        <li><span class="ck">✓</span>Single HTML file</li>
+        <li><span class="ck">✓</span>Lifetime updates</li>
+      </ul>
+      <a href="https://vinyan.gumroad.com/l/jpkfis" target="_blank" class="p-btn p-btn-s">Get CodeVault AI →</a>
+    </div>
+    <div class="pcard">
+      <div class="p-tier">Team Bundle</div>
+      <div class="p-amt" style="font-size:36px;padding-top:6px;">$67</div>
+      <div class="p-cad">CodeVault + APIForge AI</div>
+      <div class="p-sep"></div>
+      <ul class="p-list">
+        <li><span class="ck">✓</span>CodeVault AI (4 engines)</li>
+        <li><span class="ck">✓</span>APIForge AI (5 engines)</li>
+        <li><span class="ck">✓</span>Save $27 vs buying separate</li>
+        <li><span class="ck">✓</span>Lifetime updates both tools</li>
+      </ul>
+      <a href="https://vinyan.gumroad.com/l/jpkfis" target="_blank" class="p-btn p-btn-o">Get bundle</a>
+    </div>
+  </div>
+</section>
+
+<div class="cta">
+  <div>
+    <h2>Your code deserves<br>better feedback.</h2>
+    <p>Join developers shipping cleaner, safer code with CodeVault AI. One file. No subscription. Yours forever.</p>
+  </div>
+  <div class="cta-btns">
+    <a href="#features" class="btn-outline">See features</a>
+    <a href="https://vinyan.gumroad.com/l/jpkfis" target="_blank" class="btn-hero">Get CodeVault AI — $47 →</a>
+  </div>
+</div>
+
+<footer>
+  <a href="#" class="logo"><div class="logo-mark">⬡</div>CodeVault AI</a>
+  <div class="foot-copy">© 2026 CodeVault AI · Built for engineers who ship.</div>
+  <ul class="foot-links">
+    <li><a href="https://vinyan.gumroad.com/l/jpkfis" target="_blank">Buy Now</a></li>
+    <li><a href="https://vinyan.gumroad.com" target="_blank">More Tools</a></li>
+  </ul>
+</footer>
+
+</body>
+</html>
